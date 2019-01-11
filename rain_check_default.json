@@ -1,0 +1,7 @@
+{
+    "latitude": 52,
+    "longitude": 3,
+    "interval": 120,
+    "api_url": "http://gps.buienradar.nl/getrr.php?",
+    "olisto_connector": "https://connect.triggi.com/c/<REPLACE_ME>"
+}
