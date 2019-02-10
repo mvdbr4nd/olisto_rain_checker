@@ -2,6 +2,7 @@
 
 import requests
 import sys
+import os
 import json
 import time
 import logging
@@ -22,6 +23,26 @@ def check_rain(data):
                 rain_score = max(int(rain_score), int(rainscore))
             except:
                 logger.error("Failed to parse Buienradar response")
+                pass
+
+        if data['pilight_enabled']:
+            try:
+                rain_desc = 'Dry'
+                if rain_score > 10:
+                    rain_desc = 'Very light rain'
+                if rain_score > 70:
+                    rain_desc = 'Light rain'
+                if rain_score > 110:
+                    rain_desc = 'Persistent rain'
+                if rain_score > 135:
+                    rain_desc = 'Heavy rain'
+                if rain_score > 165:
+                    rain_desc = 'Very heavy rain'
+
+                os.system("pilight-send -p generic_label -i %s -l '%s, %s'"%(data['pilight_label'], rain_desc, rain_score))
+
+            except:
+                logger.error("Failed to update pilight")
                 pass
 
         if rain_score != check_rain.last_rain_score:
