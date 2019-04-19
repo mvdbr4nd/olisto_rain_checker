@@ -61,7 +61,7 @@ def check_rain():
 
         if config.config['pilight_enabled']:
             try:
-                os.system("pilight-send -p generic_label -i %s -l '%s, %s'"%(config.config['pilight_label'], rain_score_text(rain_desc), rain_score))
+                os.system("pilight-send -p generic_label -i %s -l '%s, %s'"%(config.config['pilight_label'], rain_score_text(rain_score), rain_score))
 
             except:
                 logger.error("Failed to update pilight")
