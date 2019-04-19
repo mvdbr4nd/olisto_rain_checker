@@ -32,16 +32,16 @@ def speak(string):
 
 def rain_score_text(score):
     if rain_score > 10:
-        return = 'Very light rain'
+        return 'Very light rain'
     if rain_score > 70:
-        return = 'Light rain'
+        return 'Light rain'
     if rain_score > 110:
-        return = 'Persistent rain'
+        return 'Persistent rain'
     if rain_score > 135:
-        return = 'Heavy rain'
+        return 'Heavy rain'
     if rain_score > 165:
-        return = 'Very heavy rain'
-    return = 'Dry'
+        return 'Very heavy rain'
+    return 'Dry'
 
 def check_rain():
     rain_url_loc = config.config['api_url'] + "lat=%s&lon=%s"%(config.config['latitude'], config.config['longitude'])
