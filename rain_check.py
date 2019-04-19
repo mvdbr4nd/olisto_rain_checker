@@ -10,6 +10,9 @@ from logging.handlers import RotatingFileHandler
 from urllib import request as req
 from urllib import parse
 import traceback
+from config import Config
+
+config = Config()
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +30,6 @@ def speak(string):
         pass
 
 def rain_score_text(score):
-    return = 'Dry'
     if rain_score > 10:
         return = 'Very light rain'
     if rain_score > 70:
@@ -38,10 +40,10 @@ def rain_score_text(score):
         return = 'Heavy rain'
     if rain_score > 165:
         return = 'Very heavy rain'
+    return = 'Dry'
 
-
-def check_rain(data):
-    rain_url_loc = data['api_url'] + "lat=%s&lon=%s"%(data['latitude'], data['longitude'])
+def check_rain():
+    rain_url_loc = config.config['api_url'] + "lat=%s&lon=%s"%(config.config['latitude'], config.config['longitude'])
     page = requests.get(rain_url_loc)
 
     if page.status_code == 200:
@@ -56,9 +58,9 @@ def check_rain(data):
                 logger.error("Failed to parse Buienradar response")
                 pass
 
-        if data['pilight_enabled']:
+        if config.config['pilight_enabled']:
             try:
-                os.system("pilight-send -p generic_label -i %s -l '%s, %s'"%(data['pilight_label'], rain_score_text(rain_desc), rain_score))
+                os.system("pilight-send -p generic_label -i %s -l '%s, %s'"%(config.config['pilight_label'], rain_score_text(rain_desc), rain_score))
 
             except:
                 logger.error("Failed to update pilight")
@@ -71,7 +73,7 @@ def check_rain(data):
 
             check_rain.last_rain_score = rain_score
             # post rain score to Olisto
-            url = '%s?value=%s'%(data['olisto_connector'], rain_score)
+            url = '%s?value=%s'%(config.config['olisto_connector'], rain_score)
             requests.post(url)
     else:
         logger.error("Cannot update rain data failed to get buienradar response")
@@ -91,19 +93,7 @@ if __name__ == '__main__':
     logger.addHandler(handler_stdout)
     logger.setLevel(logging.DEBUG)
 
-    logger.info("Loading configuration")
-
-    try:
-        with open('rain_check.json') as data_file:
-            data = json.load(data_file)
-    except FileNotFoundError:
-        logger.error("Failed to open configuration, create the configuration file: rain_check.json")
-        sys.exit()
-    except ValueError:
-        logger.error("Failed to parse configuration")
-        sys.exit()
-
     logger.info("Starting Olisto Rain checker")
     while True:
-        check_rain(data)
-        time.sleep(data['interval'])
+        check_rain()
+        time.sleep(config.config['interval'])
