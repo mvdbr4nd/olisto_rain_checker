@@ -20,14 +20,15 @@ def urlencode(str):
     return parse.quote(str)
 
 def speak(string):
-    try:
-        url = "http://192.168.1.17:8299/%s"%(urlencode(string))
-        print(url)
-        rq = req.Request(url)
-        req.urlopen(rq)
-    except:
-        traceback.print_exc()
-        pass
+    if config.config["speak_enabled"]:
+        try:
+            url = "%s%s"%(config.config["speak_url"], urlencode(string))
+            print(url)
+            rq = req.Request(url)
+            req.urlopen(rq)
+        except:
+            traceback.print_exc()
+            pass
 
 def rain_score_text(score):
     if rain_score > 10:
