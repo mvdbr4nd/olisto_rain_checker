@@ -30,7 +30,7 @@ def speak(string):
             traceback.print_exc()
             pass
 
-def rain_score_text(score):
+def rain_score_text(rain_score):
     if rain_score > 10:
         return 'Very light rain'
     if rain_score > 70:
