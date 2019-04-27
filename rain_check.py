@@ -44,6 +44,8 @@ def rain_score_text(rain_score):
     return 'Dry'
 
 def check_rain():
+    global last_rain_score
+
     rain_url_loc = config.config['api_url'] + "lat=%s&lon=%s"%(config.config['latitude'], config.config['longitude'])
     page = requests.get(rain_url_loc)
 
@@ -54,7 +56,7 @@ def check_rain():
             try:
                 rainscore, _time = item.split('|')
                 rain_score = max(int(rain_score), int(rainscore))
-                print("rainscore: %s"%rainscore)
+                #print("rainscore: %s"%rainscore)
             except:
                 logger.error("Failed to parse Buienradar response")
                 pass
@@ -67,19 +69,19 @@ def check_rain():
                 logger.error("Failed to update pilight")
                 pass
 
-        if rain_score != check_rain.last_rain_score:
+        if rain_score != last_rain_score:
             logger.debug("Got new rain score %s"%rain_score)
             if rain_score > 60:
                 speak("incoming %s detected"%rain_score_text(rain_score))
 
-            check_rain.last_rain_score = rain_score
+            last_rain_score = rain_score
             # post rain score to Olisto
             url = '%s?value=%s'%(config.config['olisto_connector'], rain_score)
             requests.post(url)
     else:
         logger.error("Cannot update rain data failed to get buienradar response")
 
-check_rain.last_rain_score = 0
+last_rain_score = 0
 
 if __name__ == '__main__':
     handler = RotatingFileHandler(
