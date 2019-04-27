@@ -56,7 +56,6 @@ def check_rain():
             try:
                 rainscore, _time = item.split('|')
                 rain_score = max(int(rain_score), int(rainscore))
-                #print("rainscore: %s"%rainscore)
             except:
                 logger.error("Failed to parse Buienradar response")
                 pass
@@ -64,15 +63,14 @@ def check_rain():
         if config.config['pilight_enabled']:
             try:
                 os.system("pilight-send -p generic_label -i %s -l '%s, %s'"%(config.config['pilight_label'], rain_score_text(rain_score), rain_score))
-
             except:
                 logger.error("Failed to update pilight")
                 pass
 
         if rain_score != last_rain_score:
             logger.debug("Got new rain score %s"%rain_score)
-            if rain_score > 60:
-                speak("incoming %s detected"%rain_score_text(rain_score))
+            if rain_score > 69:
+                speak("Incoming %s detected"%rain_score_text(rain_score))
 
             last_rain_score = rain_score
             # post rain score to Olisto
