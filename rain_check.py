@@ -31,17 +31,14 @@ def speak(string):
             pass
 
 def rain_score_text(rain_score):
-    if rain_score > 10:
-        return 'Very light rain'
-    if rain_score > 70:
-        return 'Light rain'
-    if rain_score > 110:
-        return 'Persistent rain'
     if rain_score > 135:
         return 'Heavy rain'
-    if rain_score > 165:
-        return 'Very heavy rain'
-    return 'Dry'
+    if rain_score > 110:
+        return 'Persistent rain'
+    if rain_score > 70:
+        return 'Light rain'
+    if rain_score > 10:
+        return 'Very light rain'
 
 def check_rain():
     global last_rain_score
