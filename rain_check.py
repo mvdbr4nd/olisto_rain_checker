@@ -39,6 +39,7 @@ def rain_score_text(rain_score):
         return 'Light rain'
     if rain_score > 10:
         return 'Very light rain'
+    return 'Dry'
 
 def check_rain():
     global last_rain_score
@@ -56,6 +57,7 @@ def check_rain():
                 rain_score = max(int(rain_score), int(rainscore))
             except:
                 logger.error("Failed to parse Buienradar response")
+                rain_score = 0
                 pass
 
         if config.config['pilight_enabled']:
