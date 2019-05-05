@@ -58,6 +58,7 @@ def check_rain():
                 rain_score = max(int(rain_score), int(rainscore))
             except:
                 logger.error("Failed to parse Buienradar response")
+                rain_score = 0
                 pass
 
         if config.config['pilight_enabled']:
