@@ -66,9 +66,10 @@ def check_rain():
             except:
                 logger.error("Failed to update pilight")
                 pass
-    
+
         if rain_score_text(rain_score) != last_rain_score_text:
-            speak("Incoming %s detected"%rain_score_text(rain_score))
+            if rain_score > 10:
+                speak("Incoming %s detected"%rain_score_text(rain_score))
             last_rain_score_text = rain_score_text(rain_score)
 
         if rain_score != last_rain_score:
