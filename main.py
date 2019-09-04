@@ -85,9 +85,9 @@ last_rain_score_text = ""
 
 if __name__ == '__main__':
     handler = RotatingFileHandler(
-        'rain_check.log',
+        '/var/log/rain_check.log',
         maxBytes=100000,
-        backupCount=30)
+        backupCount=0)
     handler.setLevel(logging.DEBUG)
     formatter = logging.Formatter("%(asctime)s - %(name)-22s - %(levelname)-8s - %(message)s")
     handler.setFormatter(formatter)
