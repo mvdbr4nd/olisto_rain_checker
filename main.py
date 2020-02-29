@@ -72,9 +72,10 @@ def check_rain():
             except:
                 logger.error("Failed to update pilight")
                 pass
-    
+
         if rain_score_text(rain_score) != last_rain_score_text:
-            speak("Incoming %s detected"%rain_score_text(rain_score))
+            if rain_score > 10:
+                speak("Incoming %s detected"%rain_score_text(rain_score))
             last_rain_score_text = rain_score_text(rain_score)
 
         if rain_score != last_rain_score:
@@ -90,9 +91,9 @@ last_rain_score_text = ""
 
 if __name__ == '__main__':
     handler = RotatingFileHandler(
-        'rain_check.log',
+        '/var/log/rain_check.log',
         maxBytes=100000,
-        backupCount=30)
+        backupCount=0)
     handler.setLevel(logging.DEBUG)
     formatter = logging.Formatter("%(asctime)s - %(name)-22s - %(levelname)-8s - %(message)s")
     handler.setFormatter(formatter)

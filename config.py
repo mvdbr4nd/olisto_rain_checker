@@ -15,7 +15,7 @@ class Singleton(type):
 class Config(metaclass=Singleton):
     def __init__(self):
         try:
-            with open('rain_check.json') as data_file:
+            with open('config.json') as data_file:
                 self.config = json.load(data_file)
         except FileNotFoundError:
             print("Failed to open configuration, create the configuration file: rain_check.json")
