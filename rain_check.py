@@ -51,18 +51,24 @@ def check_rain():
     if page.status_code == 200:
         b_data = page.text.split()
         rain_score = 0
+        validdata = True
         for item in b_data[:3]:
             try:
                 rainscore, _time = item.split('|')
                 rain_score = max(int(rain_score), int(rainscore))
             except:
+                validdata = False
                 logger.error("Failed to parse Buienradar response")
                 rain_score = 0
                 pass
 
         if config.config['pilight_enabled']:
             try:
-                os.system("pilight-send -p generic_label -i %s -l '%s, %s'"%(config.config['pilight_label'], rain_score_text(rain_score), rain_score))
+                if validdata:
+                    os.system("pilight-send -p generic_label -i %s -l '%s, %s'"%(config.config['pilight_label'], rain_score_text(rain_score), rain_score))
+                    os.system("pilight-send -p generic_label -i %s -l '%s'"%(config.config['pilight_timestamp_label'], datetime.datetime.now().timestamp()))
+                else:
+                    os.system("pilight-send -p generic_label -i %s -l '%s, %s'"%(config.config['pilight_label'], "Invalid data", rain_score))                    
             except:
                 logger.error("Failed to update pilight")
                 pass
