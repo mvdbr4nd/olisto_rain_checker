@@ -1,4 +1,4 @@
-# olisto_rain_checker
+#rain_checker
 Rain Updater for Olisto connectors
 
 This checker will periodicly check for the expected rain for a configured location (netherlands) using the buienradar api.

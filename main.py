@@ -23,10 +23,8 @@ def urlencode(str):
 def speak(string):
     if config.config["speak_enabled"]:
         try:
-            url = "%s%s"%(config.config["speak_url"], urlencode(string))
-            print(url)
-            rq = req.Request(url)
-            req.urlopen(rq)
+            command = "python3 /home/pi/ghome-speak.py 192.168.0.106 192.168.0.110 '%s'"%string
+            os.system(command)
         except:
             traceback.print_exc()
             pass
@@ -76,14 +74,11 @@ def check_rain():
 
         if rain_score_text(rain_score) != last_rain_score_text:
             if rain_score > 10:
-                speak("Incoming %s detected"%rain_score_text(rain_score))
+                speak("Incoming %s"%rain_score_text(rain_score))
             last_rain_score_text = rain_score_text(rain_score)
 
         if rain_score != last_rain_score:
             last_rain_score = rain_score
-            # post rain score to Olisto
-            url = '%s?value=%s'%(config.config['olisto_connector'], rain_score)
-            requests.post(url)
     else:
         logger.error("Cannot update rain data failed to get buienradar response")
 
