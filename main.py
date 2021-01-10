@@ -6,6 +6,7 @@ import os
 import json
 import time
 import logging
+import subprocess
 from logging.handlers import RotatingFileHandler
 from urllib import request as req
 from urllib import parse
@@ -23,8 +24,8 @@ def urlencode(str):
 def speak(string):
     if config.config["speak_enabled"]:
         try:
-            command = "python3 /home/pi/ghome-speak.py 192.168.0.106 192.168.0.110 '%s'"%string
-            os.system(command)
+            # command = "/home/pi/ghome-speak.py 192.168.0.103 192.168.0.110 '%s'"%string
+            subprocess.Popen(["/home/pi/ghome-speak.py","192.168.0.103","192.168.0.107",string])
         except:
             traceback.print_exc()
             pass
